@@ -14,7 +14,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+         $products = Product::all()->toArray();         
+         return view('v1.index', compact('products')); 
     }
 
     /**
@@ -65,7 +66,8 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        //
+         $product = Product::find($id);         
+         return view('v1.edit',compact('product','id')); 
     }
 
     /**
@@ -77,7 +79,23 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $product = Product::find($id);         
+        $this->validate(request(), [           
+        'nim' => 'required',
+        'nama' => 'required',
+        'fakultas' => 'required',
+        'jurusan' => 'required',
+        'username' => 'required',
+        'password' => 'required']); 
+ 
+        $product->nim = $request->get('nim');         
+        $product->nama = $request->get('nama');
+        $product->fakultas = $request->get('fakultas');
+        $product->jurusan = $request->get('jurusan');
+        $product->username = $request->get('username');
+        $product->password = $request->get('password');         
+        $product->save();         
+        return redirect('v1')->with('success','Product has been updated');  
     }
 
     /**
@@ -88,6 +106,8 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+         $product = Product::find($id);         
+         $product->delete();         
+         return redirect('v1')->with('success','Product has been  deleted');
     }
 }

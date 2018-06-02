@@ -11,6 +11,7 @@
 |
 */
 
+Route::resource('v1','ProductController');
 Route::get('/', function () {
     return view('welcome');
 });
